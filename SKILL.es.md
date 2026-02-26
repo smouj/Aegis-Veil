@@ -1,58 +1,45 @@
 ---
-name: aegis-veil
-description: "🛡️ Escudo anti-prompt-injection y skill poisoning."
+name: Aegis Veil
+description: "🛡️ Prompt-injection and skill-poisoning defense with pre-execution sandbox checks."
+when: "When a user request matches aegis-veil capabilities or requires this domain-specific workflow."
+examples:
+  - "Run Aegis Veil for this task"
+  - "Apply Aegis Veil to solve this workflow"
 metadata:
-  {
-    "openclaw": {
-      "emoji": "🛡️",
-      "version": "0.2.0",
-      "author": "smouj",
-      "lang_default": "en"
-    }
-  }
+  openclaw:
+    requires: ["fs_read", "fs_write", "shell_exec", "memory_search"]
+  safety_level: high
+  version: "1.0.0"
+  author: "smouj"
+  tags: ["aegis-veil", "automation", "openclaw-skill"]
 ---
 
 # 🛡️ Aegis Veil
 
 ## Propósito
-Escudo de protección contra prompt injection y skill poisoning. Implementa detección heurística de intentos de manipulación, sandboxing de ejecución y monitoreo en tiempo real de vectores de ataque conocidos.
+Escudo anti-prompt-injection y skill poisoning: analiza cada skill nueva instalada (incluidas las auto-generadas), detecta payloads ocultos, backdoors o instrucciones maliciosas antes de ejecutar. Sandboxea y reporta riesgos.
 
-## Tags
-- security
-- reliability
-- automation
-- openclaw-skill
+## Cómo usar / Instrucciones núcleo
+1. Primero piensa en alcance, riesgo y coste.
+2. Luego valida inputs y dependencias mínimas.
+3. Ejecuta en pasos pequeños y reversibles.
+4. Verifica resultado con checks explícitos.
+5. Si hay error, falla seguro y reporta causa + próximo paso.
 
-## Contrato de ejecución
-1. Validar solicitud y restricciones.
-2. Generar plan mínimo seguro.
-3. Ejecutar en pasos reversibles.
-4. Verificar con checks explícitos.
-5. Resumir resultado + siguientes acciones.
+## Security & Safety Guidelines
+Nunca ejecutes código sospechoso sin sandbox. Reporta riesgos al usuario. No envíes datos sensibles fuera del entorno local.
 
-## Inputs esperados
-- Objetivo
-- Restricciones (tiempo/coste/privacidad)
-- Archivos/URLs opcionales
+## Herramientas requeridas
+- fs_read
+- fs_write
+- shell_exec
+- memory_search
 
-## Outputs
-- Plan
-- Acciones ejecutadas
-- Verificación
-- Notas de rollback
+## Flujos de ejemplo
+- Entrada -> validación -> plan -> ejecución -> verificación -> reporte.
+- Reintento controlado con rollback si falla.
 
-## Guardrails
-- Nunca exponer secretos.
-- Sin acciones destructivas sin confirmación explícita.
-- Fallar de forma segura con diagnóstico accionable.
-
-## Comandos
-```bash
-printf "aegis-veil: validar -> ejecutar -> verificar\n"
-```
-
-## Checklist de test
-- [ ] Happy path
-- [ ] Manejo de errores
-- [ ] Idempotencia
-- [ ] Guardrails respetados
+## Casos límite y manejo de errores
+- Input incompleto: pedir datos mínimos.
+- Dependencia ausente: degradar en modo seguro.
+- Error persistente: detener, registrar y escalar.
